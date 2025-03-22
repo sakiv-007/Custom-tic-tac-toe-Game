@@ -128,10 +128,10 @@ function drawMatchLine(cells, player) {
     const boardRect = gameBoard.getBoundingClientRect();
     
     // Calculate positions relative to the game board
-    const x1 = firstRect.left + firstRect.width/2 - boardRect.left;
-    const y1 = firstRect.top + firstRect.height/2 - boardRect.top;
-    const x2 = lastRect.left + lastRect.width/2 - boardRect.left;
-    const y2 = lastRect.top + lastRect.height/2 - boardRect.top;
+    const x1 = firstRect.left - boardRect.left + (firstRect.width/2);
+    const y1 = firstRect.top - boardRect.top + (firstRect.height/2);
+    const x2 = lastRect.left - boardRect.left + (lastRect.width/2);
+    const y2 = lastRect.top - boardRect.top + (lastRect.height/2);
     
     // Calculate length and angle
     const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
@@ -142,8 +142,27 @@ function drawMatchLine(cells, player) {
     
     // Calculate extended length and position adjustments
     const totalLength = length + (extension * 2);
-    const dx = extension * Math.cos(angle * Math.PI / 180);
-    const dy = extension * Math.sin(angle * Math.PI / 180);
+    
+    // Special handling for perfectly horizontal and vertical lines
+    const isHorizontal = Math.abs(angle) < 1 || Math.abs(angle - 180) < 1;
+    const isVertical = Math.abs(angle - 90) < 1 || Math.abs(angle + 90) < 1;
+    
+    let dx, dy;
+    
+    if (isHorizontal) {
+        // For horizontal lines
+        dx = extension * (angle < 90 ? 1 : -1);
+        // Add a small vertical offset to better center horizontal lines
+        dy = firstRect.height * 0.05; // Small downward adjustment
+    } else if (isVertical) {
+        // For vertical lines
+        dx = 0;
+        dy = extension * (angle > 0 ? 1 : -1);
+    } else {
+        // For diagonal lines
+        dx = extension * Math.cos(angle * Math.PI / 180);
+        dy = extension * Math.sin(angle * Math.PI / 180);
+    }
     
     // Set line properties with extension
     line.style.width = `${totalLength}px`;
@@ -163,6 +182,57 @@ function drawMatchLine(cells, player) {
     
     // Add line to game board
     gameBoard.appendChild(line);
+    
+    // Add window resize handler to update line positions
+    const updateLinePosition = () => {
+        // Recalculate positions after resize
+        const updatedFirstRect = firstCell.getBoundingClientRect();
+        const updatedLastRect = lastCell.getBoundingClientRect();
+        const updatedBoardRect = gameBoard.getBoundingClientRect();
+        
+        const newX1 = updatedFirstRect.left - updatedBoardRect.left + (updatedFirstRect.width/2);
+        const newY1 = updatedFirstRect.top - updatedBoardRect.top + (updatedFirstRect.height/2);
+        const newX2 = updatedLastRect.left - updatedBoardRect.left + (updatedLastRect.width/2);
+        const newY2 = updatedLastRect.top - updatedBoardRect.top + (updatedLastRect.height/2);
+        
+        const newLength = Math.sqrt(Math.pow(newX2 - newX1, 2) + Math.pow(newY2 - newY1, 2));
+        const newAngle = Math.atan2(newY2 - newY1, newX2 - newX1) * 180 / Math.PI;
+        
+        const newExtension = updatedFirstRect.width * 0.2;
+        const newTotalLength = newLength + (newExtension * 2);
+        
+        // Special handling for perfectly horizontal and vertical lines
+        const newIsHorizontal = Math.abs(newAngle) < 1 || Math.abs(newAngle - 180) < 1;
+        const newIsVertical = Math.abs(newAngle - 90) < 1 || Math.abs(newAngle + 90) < 1;
+        
+        let newDx, newDy;
+        
+        if (newIsHorizontal) {
+            // For horizontal lines
+            newDx = newExtension * (newAngle < 90 ? 1 : -1);
+            // Add a small vertical offset to better center horizontal lines
+            newDy = updatedFirstRect.height * 0.05; // Small downward adjustment
+        } else if (newIsVertical) {
+            // For vertical lines
+            newDx = 0;
+            newDy = newExtension * (newAngle > 0 ? 1 : -1);
+        } else {
+            // For diagonal lines
+            newDx = newExtension * Math.cos(newAngle * Math.PI / 180);
+            newDy = newExtension * Math.sin(newAngle * Math.PI / 180);
+        }
+        
+        line.style.width = `${newTotalLength}px`;
+        line.style.left = `${newX1 - newDx}px`;
+        line.style.top = `${newY1 - newDy}px`;
+        line.style.transform = `rotate(${newAngle}deg)`;
+    };
+    
+    // Add the event listener
+    window.addEventListener('resize', updateLinePosition);
+    
+    // Store the event listener reference on the line element for potential cleanup
+    line.updatePosition = updateLinePosition;
 }
 
 // Modify the checkDirection function to return cells in match
