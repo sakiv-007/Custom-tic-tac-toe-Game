@@ -314,47 +314,80 @@ button:hover::after {
 @media (max-width: 480px) {
     .container {
         padding: 10px;
+        width: 98%; /* Increase width to use more screen space */
+        max-width: none; /* Remove max-width constraint on mobile */
     }
     
     h1 {
         font-size: 1.5rem;
+        margin-bottom: 12px; /* Reduce margin to give more space to game board */
+    }
+    
+    .settings {
+        padding: 12px 10px;
+        margin-bottom: 12px; /* Reduce margin */
     }
     
     #gameBoard {
-        padding: 0px;
+        padding: 5px;
         gap: 2px;
-        overflow-x: auto;
+        width: 100%; /* Ensure game board uses full width */
         max-width: 100%;
+        margin: 10px auto; /* Reduce margin */
     }
     
     /* For very large grids on small screens */
     .large-grid #gameBoard {
-        transform: scale(0.9);
+        transform: scale(0.95); /* Less scaling down */
         transform-origin: center;
         margin: 0 auto;
     }
     
     /* Adjust cell size for large grids */
     .large-grid .cell {
-        min-width: 15px;
-        min-height: 15px;
+        min-width: 18px; /* Slightly larger minimum size */
+        min-height: 18px;
     }
     
-    .number-input-container {
-        flex-direction: row;
+    #scores {
+        margin: 12px 0; /* Reduce margin */
+        padding: 10px;
     }
     
-    .number-controls {
-        margin-left: 5px;
-    }
-    
-    .number-control-btn {
-        width: 25px;
-        height: 25px;
-        font-size: 14px;
+    #status {
+        margin-top: 12px; /* Reduce margin */
+        padding: 10px;
     }
 }
 
+/* Additional media query for very small screens */
+@media (max-width: 360px) {
+    .container {
+        padding: 8px 5px;
+    }
+    
+    .settings {
+        padding: 10px 8px;
+    }
+    
+    #gameBoard {
+        padding: 3px;
+        gap: 1px; /* Minimal gap for very small screens */
+    }
+    
+    .cell {
+        border-radius: 3px;
+    }
+    
+    .cell.x::before, 
+    .cell.x::after {
+        height: 2px;
+    }
+    
+    .cell.o::before {
+        border-width: 2px;
+    }
+}
 .cell:hover {
     background: rgba(51, 65, 85, 0.7);
     transform: translateY(-2px);
