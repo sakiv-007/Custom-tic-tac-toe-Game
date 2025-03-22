@@ -34,6 +34,9 @@ function initializeGame() {
     } else {
         document.querySelector('.container').classList.remove('large-grid');
     }
+    
+    // Remove any existing match lines
+    document.querySelectorAll('.match-line').forEach(line => line.remove());
 }
 
 function updateScores() {
@@ -104,11 +107,53 @@ function checkWin(row, col) {
     return totalMatches;
 }
 
+// Add to your existing script.js file
+
+// Add a function to draw lines for matches
+function drawMatchLine(cells, player) {
+    // Create a line element
+    const line = document.createElement('div');
+    line.classList.add('match-line');
+    
+    // Add player-specific class for color
+    line.classList.add(player.toLowerCase() + '-line');
+    
+    // Get positions of first and last cell
+    const firstCell = document.querySelector(`[data-row="${cells[0][0]}"][data-col="${cells[0][1]}"]`);
+    const lastCell = document.querySelector(`[data-row="${cells[cells.length-1][0]}"][data-col="${cells[cells.length-1][1]}"]`);
+    
+    // Get positions
+    const firstRect = firstCell.getBoundingClientRect();
+    const lastRect = lastCell.getBoundingClientRect();
+    const boardRect = gameBoard.getBoundingClientRect();
+    
+    // Calculate positions relative to the game board
+    const x1 = firstRect.left + firstRect.width/2 - boardRect.left;
+    const y1 = firstRect.top + firstRect.height/2 - boardRect.top;
+    const x2 = lastRect.left + lastRect.width/2 - boardRect.left;
+    const y2 = lastRect.top + lastRect.height/2 - boardRect.top;
+    
+    // Calculate length and angle
+    const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+    
+    // Set line properties
+    line.style.width = `${length}px`;
+    line.style.left = `${x1}px`;
+    line.style.top = `${y1}px`;
+    line.style.transform = `rotate(${angle}deg)`;
+    line.style.transformOrigin = 'left center';
+    
+    // Add line to game board
+    gameBoard.appendChild(line);
+}
+
+// Modify the checkDirection function to return cells in match
 function checkDirection(row, col, rowDir, colDir) {
     let count = 1;
     let matches = 0;
-    let cellsInMatch = [[row, col]]; // Track cells in current match
-
+    let cellsInMatch = [[row, col]];
+    
     // Check in positive direction
     let i = row + rowDir;
     let j = col + colDir;
@@ -126,15 +171,23 @@ function checkDirection(row, col, rowDir, colDir) {
     while (i >= 0 && i < gridSize && j >= 0 && j < gridSize && 
            board[i][j] === currentPlayer && !usedCells.has(`${i},${j}`)) {
         count++;
-        cellsInMatch.push([i, j]);
+        cellsInMatch.unshift([i, j]); // Add to beginning to maintain order
         i -= rowDir;
         j -= colDir;
     }
     
     if (count >= matchLength) {
         matches = Math.floor(count / matchLength);
+        
         // Mark cells as used
         cellsInMatch.forEach(([r, c]) => usedCells.add(`${r},${c}`));
+        
+        // Draw line for each complete match
+        for (let i = 0; i < matches; i++) {
+            const start = i * matchLength;
+            const matchCells = cellsInMatch.slice(start, start + matchLength);
+            drawMatchLine(matchCells, currentPlayer);
+        }
     }
     
     return matches;
