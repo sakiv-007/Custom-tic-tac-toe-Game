@@ -4,6 +4,8 @@ let gridSize = 3;
 let matchLength = 3;
 let gameActive = true;
 let scores = { X: 0, O: 0 };
+let usedCells = new Set(); // Track used cells
+
 
 const gameBoard = document.getElementById('gameBoard');
 const statusDisplay = document.getElementById('status');
@@ -20,6 +22,7 @@ function initializeGame() {
     gameActive = true;
     currentPlayer = 'X';
     scores = { X: 0, O: 0 };
+    usedCells = new Set(); // Reset used cells
     board = Array.from({ length: gridSize }, () => Array(gridSize).fill(null));
     renderBoard();
     updateScores();
@@ -90,12 +93,15 @@ function checkWin(row, col) {
 function checkDirection(row, col, rowDir, colDir) {
     let count = 1;
     let matches = 0;
-    
+    let cellsInMatch = [[row, col]]; // Track cells in current match
+
     // Check in positive direction
     let i = row + rowDir;
     let j = col + colDir;
-    while (i >= 0 && i < gridSize && j >= 0 && j < gridSize && board[i][j] === currentPlayer) {
+    while (i >= 0 && i < gridSize && j >= 0 && j < gridSize && 
+           board[i][j] === currentPlayer && !usedCells.has(`${i},${j}`)) {
         count++;
+        cellsInMatch.push([i, j]);
         i += rowDir;
         j += colDir;
     }
@@ -103,14 +109,18 @@ function checkDirection(row, col, rowDir, colDir) {
     // Check in negative direction
     i = row - rowDir;
     j = col - colDir;
-    while (i >= 0 && i < gridSize && j >= 0 && j < gridSize && board[i][j] === currentPlayer) {
+    while (i >= 0 && i < gridSize && j >= 0 && j < gridSize && 
+           board[i][j] === currentPlayer && !usedCells.has(`${i},${j}`)) {
         count++;
+        cellsInMatch.push([i, j]);
         i -= rowDir;
         j -= colDir;
     }
     
     if (count >= matchLength) {
         matches = Math.floor(count / matchLength);
+        // Mark cells as used
+        cellsInMatch.forEach(([r, c]) => usedCells.add(`${r},${c}`));
     }
     
     return matches;
