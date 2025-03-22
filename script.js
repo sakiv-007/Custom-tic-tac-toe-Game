@@ -44,7 +44,12 @@ function renderBoard() {
             cell.classList.add('cell');
             cell.dataset.row = i;
             cell.dataset.col = j;
-            cell.textContent = board[i][j];
+            
+            // Add class instead of text content if cell is not empty
+            if (board[i][j]) {
+                cell.classList.add(board[i][j].toLowerCase());
+            }
+            
             cell.addEventListener('click', handleCellClick);
             gameBoard.appendChild(cell);
         }
@@ -60,7 +65,9 @@ function handleCellClick(event) {
     if (board[row][col] !== null) return;
     
     board[row][col] = currentPlayer;
-    event.target.textContent = currentPlayer;
+    
+    // Use classes instead of text content
+    event.target.classList.add(currentPlayer.toLowerCase());
     
     const matches = checkWin(row, col);
     if (matches > 0) {
