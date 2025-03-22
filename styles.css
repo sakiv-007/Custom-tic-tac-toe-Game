@@ -267,24 +267,91 @@ button:hover::after {
     box-shadow: 0 0 5px rgba(239, 68, 68, 0.5);
 }
 
-/* Media query for small screens */
+/* Media queries for responsive design */
 @media (max-width: 768px) {
+    .container {
+        padding: 20px;
+        width: 95%;
+    }
+    
+    h1 {
+        font-size: 1.8rem;
+        margin-bottom: 16px;
+    }
+    
+    .settings {
+        padding: 15px;
+    }
+    
     #gameBoard {
-        padding: 8px;
+        padding: 10px;
         gap: 4px;
+        margin: 16px auto;
     }
     
     .cell {
+        font-size: 1rem;
         border-radius: 4px;
     }
     
-    .cell.x::before, 
-    .cell.x::after {
-        height: 2px;
+    #scores {
+        flex-direction: row;
+        padding: 10px;
+        margin: 16px 0;
     }
     
-    .cell.o::before {
-        border-width: 2px;
+    #scores div {
+        padding: 6px 10px;
+        font-size: 0.9rem;
+    }
+    
+    #status {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 10px;
+    }
+    
+    h1 {
+        font-size: 1.5rem;
+    }
+    
+    #gameBoard {
+        padding: 0px;
+        gap: 2px;
+        overflow-x: auto;
+        max-width: 100%;
+    }
+    
+    /* For very large grids on small screens */
+    .large-grid #gameBoard {
+        transform: scale(0.9);
+        transform-origin: center;
+        margin: 0 auto;
+    }
+    
+    /* Adjust cell size for large grids */
+    .large-grid .cell {
+        min-width: 15px;
+        min-height: 15px;
+    }
+    
+    .number-input-container {
+        flex-direction: row;
+    }
+    
+    .number-controls {
+        margin-left: 5px;
+    }
+    
+    .number-control-btn {
+        width: 25px;
+        height: 25px;
+        font-size: 14px;
     }
 }
 

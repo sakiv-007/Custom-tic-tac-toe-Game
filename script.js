@@ -27,6 +27,13 @@ function initializeGame() {
     renderBoard();
     updateScores();
     statusDisplay.textContent = `It's ${currentPlayer}'s turn`;
+    
+    // Add class for large grids
+    if (gridSize > 8) {
+        document.querySelector('.container').classList.add('large-grid');
+    } else {
+        document.querySelector('.container').classList.remove('large-grid');
+    }
 }
 
 function updateScores() {
@@ -171,4 +178,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+});
+
+
+// Add this to ensure the game is responsive on load and resize
+window.addEventListener('resize', function() {
+    if (gridSize > 8) {
+        document.querySelector('.container').classList.add('large-grid');
+    }
 });
