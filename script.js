@@ -139,3 +139,29 @@ function endGame() {
         winner = 'Player O wins!';
     }
     statusDisplay.textContent = `Game Over! ${winner} Final Scores - X: ${scores.X}, O: ${scores.O}`;}
+
+
+// Custom number input handlers
+// Add this near the beginning of your script.js file
+document.addEventListener('DOMContentLoaded', function() {
+    // Set up number input controls
+    document.querySelectorAll('.increase').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const input = this.closest('.number-input-container').querySelector('input');
+            const currentValue = parseInt(input.value);
+            if (currentValue < parseInt(input.max)) {
+                input.value = currentValue + 1;
+            }
+        });
+    });
+    
+    document.querySelectorAll('.decrease').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const input = this.closest('.number-input-container').querySelector('input');
+            const currentValue = parseInt(input.value);
+            if (currentValue > parseInt(input.min)) {
+                input.value = currentValue - 1;
+            }
+        });
+    });
+});
