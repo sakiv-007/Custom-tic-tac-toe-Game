@@ -137,12 +137,29 @@ function drawMatchLine(cells, player) {
     const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
     
-    // Set line properties
-    line.style.width = `${length}px`;
-    line.style.left = `${x1}px`;
-    line.style.top = `${y1}px`;
+    // Calculate extension amount (about 20% of a cell width)
+    const extension = firstRect.width * 0.2;
+    
+    // Calculate extended length and position adjustments
+    const totalLength = length + (extension * 2);
+    const dx = extension * Math.cos(angle * Math.PI / 180);
+    const dy = extension * Math.sin(angle * Math.PI / 180);
+    
+    // Set line properties with extension
+    line.style.width = `${totalLength}px`;
+    line.style.left = `${x1 - dx}px`;
+    line.style.top = `${y1 - dy}px`;
     line.style.transform = `rotate(${angle}deg)`;
     line.style.transformOrigin = 'left center';
+    
+    // Add gradient for opacity effect - more opaque at ends, slightly transparent in middle
+    const playerColor = player === 'X' ? '#3498db' : '#e74c3c';
+    line.style.background = `linear-gradient(to right, 
+                             ${playerColor} 0%, 
+                             ${playerColor} 20%, 
+                             ${playerColor}80 50%, 
+                             ${playerColor} 80%, 
+                             ${playerColor} 100%)`;
     
     // Add line to game board
     gameBoard.appendChild(line);
