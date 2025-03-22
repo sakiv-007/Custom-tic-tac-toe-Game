@@ -216,6 +216,8 @@ button:hover::after {
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.05);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: calc(100% - 32px); /* Account for padding */
+    justify-content: center; /* Center grid items horizontally */
 }
 
 .cell {
@@ -314,8 +316,8 @@ button:hover::after {
 @media (max-width: 480px) {
     .container {
         padding: 10px;
-        width: 98%; /* Increase width to use more screen space */
-        max-width: none; /* Remove max-width constraint on mobile */
+        width: 98%;
+        max-width: none;
     }
     
     h1 {
@@ -331,9 +333,10 @@ button:hover::after {
     #gameBoard {
         padding: 5px;
         gap: 2px;
-        width: 100%; /* Ensure game board uses full width */
+        width: calc(100% - 10px); /* Account for padding */
         max-width: 100%;
-        margin: 10px auto; /* Reduce margin */
+        margin: 10px auto;
+        justify-content: center; /* Ensure grid is centered */
     }
     
     /* For very large grids on small screens */
@@ -372,7 +375,9 @@ button:hover::after {
     
     #gameBoard {
         padding: 3px;
-        gap: 1px; /* Minimal gap for very small screens */
+        gap: 1px;
+        width: calc(100% - 6px); /* Account for padding */
+        justify-content: center;
     }
     
     .cell {
