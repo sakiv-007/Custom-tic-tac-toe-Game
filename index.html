@@ -6,17 +6,20 @@
     <title>Custom Tic Tac Toe</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="shortcut icon" href="assets/tictactoelogo.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <h1>Custom Tic Tac Toe</h1>
         <div class="settings">
-            <label for="gridSize">Grid Size:</label>
-            <input type="number" id="gridSize" min="3" max="10" value="3">
-            
-            <label for="matchLength">Match Length:</label>
-            <input type="number" id="matchLength" min="3" max="10" value="3">
-            
+            <div class="input-group">
+                <label for="gridSize">Grid Size:</label>
+                <input type="number" id="gridSize" min="3" max="10" value="3">
+            </div>
+            <div class="input-group">
+                <label for="matchLength">Match Length:</label>
+                <input type="number" id="matchLength" min="3" max="10" value="3">
+            </div>
             <button id="startGame">Start Game</button>
         </div>
         <div id="gameBoard"></div>
