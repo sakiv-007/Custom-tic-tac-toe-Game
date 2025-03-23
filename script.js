@@ -576,6 +576,10 @@ function checkDraw() {
 
 function endGame() {
     gameActive = false;
+    
+    // Add game-over class to hide the status display
+    gameContainer.classList.add('game-over');
+    
     let winner = 'It\'s a tie!';
     if (scores.X > scores.O) {
         winner = 'Player X wins!';
@@ -632,6 +636,9 @@ function endGame() {
 
 // Add a function to reset the game
 function resetGame() {
+    // Remove game-over class to show the status display again
+    gameContainer.classList.remove('game-over');
+    
     // Reset the game with the same settings
     gameActive = true;
     currentPlayer = 'X';

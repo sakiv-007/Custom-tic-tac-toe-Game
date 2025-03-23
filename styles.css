@@ -605,6 +605,12 @@ button:hover::after {
     transform: translateY(0);
 }
 
+/* Add this new class to hide the status display when game is over */
+.game-over #status {
+    display: none;
+}
+
+/* Make sure the game popup has proper z-index */
 .game-popup {
     position: fixed;
     top: 0;
