@@ -32,7 +32,9 @@ function initializeGame() {
     
     renderBoard();
     updateScores();
-    statusDisplay.textContent = `It's ${currentPlayer}'s turn`;
+    
+    // Hide status display completely
+    statusDisplay.style.display = 'none';
     
     if (gridSize > 8) {
         gameContainer.classList.add('large-grid');
@@ -159,7 +161,7 @@ function makeMove(row, col, clickEvent = null) {
     if (matches > 0) {
         scores[currentPlayer] += matches;
         updateScores();
-        statusDisplay.textContent = `Player ${currentPlayer} scored ${matches} point(s)!`;
+        // Remove status display update
     }
     
     if (checkDraw()) {
@@ -168,7 +170,7 @@ function makeMove(row, col, clickEvent = null) {
     }
     
     currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-    statusDisplay.textContent = `It's ${currentPlayer}'s turn`;
+    // Remove status display update
 }
 
 function makeAIMove() {
@@ -636,9 +638,6 @@ function endGame() {
 
 // Add a function to reset the game
 function resetGame() {
-    // Remove game-over class to show the status display again
-    gameContainer.classList.remove('game-over');
-    
     // Reset the game with the same settings
     gameActive = true;
     currentPlayer = 'X';
@@ -648,8 +647,8 @@ function resetGame() {
     // Clear the board visually
     renderBoard();
     
-    // Reset status
-    statusDisplay.textContent = `It's ${currentPlayer}'s turn`;
+    // Keep status display hidden
+    statusDisplay.style.display = 'none';
     
     // Remove any match lines
     document.querySelectorAll('.match-line').forEach(line => line.remove());
