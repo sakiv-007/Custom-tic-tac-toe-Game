@@ -582,39 +582,56 @@ function endGame() {
     } else if (scores.O > scores.X) {
         winner = 'Player O wins!';
     }
-    statusDisplay.textContent = `Game Over! ${winner} Final Scores - X: ${scores.X}, O: ${scores.O}`;
     
-    // Create and add the Play Again button
+    // Create popup overlay
+    const popup = document.createElement('div');
+    popup.classList.add('game-popup');
+    
+    // Create popup content
+    const popupContent = document.createElement('div');
+    popupContent.classList.add('popup-content');
+    
+    // Add game results to popup
+    const resultTitle = document.createElement('h2');
+    resultTitle.textContent = 'Game Over!';
+    
+    const resultMessage = document.createElement('p');
+    resultMessage.textContent = winner;
+    
+    const scoreInfo = document.createElement('div');
+    scoreInfo.classList.add('popup-scores');
+    scoreInfo.innerHTML = `
+        <div class="popup-score x-score">Player X: ${scores.X}</div>
+        <div class="popup-score o-score">Player O: ${scores.O}</div>
+    `;
+    
+    // Create Play Again button
     const playAgainButton = document.createElement('button');
     playAgainButton.textContent = 'Play Again';
     playAgainButton.id = 'playAgainButton';
     playAgainButton.classList.add('play-again-btn');
-    playAgainButton.addEventListener('click', resetGame);
+    playAgainButton.addEventListener('click', () => {
+        // Remove popup
+        document.body.removeChild(popup);
+        resetGame();
+    });
     
-    // Position the button above the game stats
-    playAgainButton.style.position = 'absolute';
-    playAgainButton.style.bottom = '160px'; // Positioned above the status display
-    playAgainButton.style.left = '50%';
-    playAgainButton.style.transform = 'translateX(-50%)';
-    playAgainButton.style.width = '200px';
+    // Assemble popup
+    popupContent.appendChild(resultTitle);
+    popupContent.appendChild(resultMessage);
+    popupContent.appendChild(scoreInfo);
+    popupContent.appendChild(playAgainButton);
+    popup.appendChild(popupContent);
     
-    // Remove any existing play again button before adding a new one
-    const existingButton = document.getElementById('playAgainButton');
-    if (existingButton) {
-        existingButton.remove();
-    }
+    // Add popup to body
+    document.body.appendChild(popup);
     
-    gameContainer.appendChild(playAgainButton);
+    // Update status display
+    statusDisplay.textContent = `Game Over! ${winner} Final Scores - X: ${scores.X}, O: ${scores.O}`;
 }
 
 // Add a function to reset the game
 function resetGame() {
-    // Remove the play again button
-    const playAgainButton = document.getElementById('playAgainButton');
-    if (playAgainButton) {
-        playAgainButton.remove();
-    }
-    
     // Reset the game with the same settings
     gameActive = true;
     currentPlayer = 'X';

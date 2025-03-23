@@ -604,3 +604,74 @@ button:hover::after {
 .play-again-btn:active {
     transform: translateY(0);
 }
+
+.game-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-content {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border-radius: 12px;
+    padding: 30px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    animation: popupFadeIn 0.3s ease-out;
+}
+
+@keyframes popupFadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.popup-content h2 {
+    color: #f8fafc;
+    margin-bottom: 15px;
+    font-size: 1.8rem;
+}
+
+.popup-content p {
+    color: #cbd5e1;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+}
+
+.popup-scores {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+}
+
+.popup-score {
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.x-score {
+    background: rgba(99, 102, 241, 0.1);
+    border-left: 3px solid #6366f1;
+    color: #6366f1;
+}
+
+.o-score {
+    background: rgba(239, 68, 68, 0.1);
+    border-left: 3px solid #ef4444;
+    color: #ef4444;
+}
+
+.popup-content .play-again-btn {
+    margin-top: 20px;
+    width: 80%;
+}
