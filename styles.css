@@ -530,11 +530,12 @@ button:hover::after {
 
 .game-container #scores {
     position: fixed;
-    bottom: 20px;
+    bottom: 5px; /* Changed from 10px to 5px to move it further down */
     left: 50%;
     transform: translateX(-50%);
     width: 80%;
     max-width: 500px;
+    margin-bottom: -15px; /* Ensure no bottom margin is pushing it up */
 }
 
 .game-container #status {
