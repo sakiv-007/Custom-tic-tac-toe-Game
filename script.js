@@ -89,14 +89,7 @@ function renderBoard() {
     statusDisplay.style.transform = 'translateX(-50%)';
     statusDisplay.style.width = '80%';
     statusDisplay.style.maxWidth = '500px';
-    
-    const scoresElement = document.getElementById('scores');
-    scoresElement.style.position = 'absolute';
-    scoresElement.style.bottom = '10%'; // Adjusted to be closer to the status
-    scoresElement.style.left = '50%';
-    scoresElement.style.transform = 'translateX(-50%)';
-    scoresElement.style.width = '80%';
-    scoresElement.style.maxWidth = '500px';
+    statusDisplay.style.maxWidth = '500px';
     
     // Rest of the function remains the same
     for (let i = 0; i < gridSize; i++) {
@@ -589,7 +582,54 @@ function endGame() {
     } else if (scores.O > scores.X) {
         winner = 'Player O wins!';
     }
-    statusDisplay.textContent = `Game Over! ${winner} Final Scores - X: ${scores.X}, O: ${scores.O}`;}
+    statusDisplay.textContent = `Game Over! ${winner} Final Scores - X: ${scores.X}, O: ${scores.O}`;
+    
+    // Create and add the Play Again button
+    const playAgainButton = document.createElement('button');
+    playAgainButton.textContent = 'Play Again';
+    playAgainButton.id = 'playAgainButton';
+    playAgainButton.classList.add('play-again-btn');
+    playAgainButton.addEventListener('click', resetGame);
+    
+    // Position the button below the game board
+    playAgainButton.style.position = 'absolute';
+    playAgainButton.style.bottom = '5%';
+    playAgainButton.style.left = '50%';
+    playAgainButton.style.transform = 'translateX(-50%)';
+    playAgainButton.style.width = '200px';
+    
+    // Remove any existing play again button before adding a new one
+    const existingButton = document.getElementById('playAgainButton');
+    if (existingButton) {
+        existingButton.remove();
+    }
+    
+    gameContainer.appendChild(playAgainButton);
+}
+
+// Add a function to reset the game
+function resetGame() {
+    // Remove the play again button
+    const playAgainButton = document.getElementById('playAgainButton');
+    if (playAgainButton) {
+        playAgainButton.remove();
+    }
+    
+    // Reset the game with the same settings
+    gameActive = true;
+    currentPlayer = 'X';
+    usedCells = new Set();
+    board = Array.from({ length: gridSize }, () => Array(gridSize).fill(null));
+    
+    // Clear the board visually
+    renderBoard();
+    
+    // Reset status
+    statusDisplay.textContent = `It's ${currentPlayer}'s turn`;
+    
+    // Remove any match lines
+    document.querySelectorAll('.match-line').forEach(line => line.remove());
+}
 
 
 // Custom number input handlers

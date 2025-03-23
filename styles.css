@@ -580,3 +580,27 @@ button:hover::after {
     overflow: hidden;
     overflow: visible; /* Allow match lines to be visible */
 }
+
+.play-again-btn {
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    transition: all 0.3s;
+    margin-top: 20px;
+    z-index: 200;
+}
+
+.play-again-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(79, 70, 229, 0.4);
+}
+
+.play-again-btn:active {
+    transform: translateY(0);
+}
