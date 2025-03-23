@@ -540,3 +540,38 @@ button:hover::after {
     left: 50%;
     transform: translateX(-50%);
 }
+
+/* Match line styles */
+.match-line {
+    position: absolute;
+    height: 4px;
+    background: linear-gradient(to right, transparent, currentColor 20%, currentColor 80%, transparent);
+    border-radius: 2px;
+    pointer-events: none;
+    z-index: 100; /* Increased z-index to ensure visibility */
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
+    transform-origin: center;
+}
+
+.x-line {
+    color: #6366f1;
+    box-shadow: 0 0 8px rgba(99, 102, 241, 0.6);
+}
+
+.o-line {
+    color: #ef4444;
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 0.8; }
+}
+
+/* Make sure the game board has position relative for absolute positioning of lines */
+#gameBoard {
+    position: relative;
+    overflow: hidden;
+    overflow: visible; /* Allow match lines to be visible */
+}
