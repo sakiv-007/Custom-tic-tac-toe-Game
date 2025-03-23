@@ -66,6 +66,21 @@ function renderBoard() {
     }
 }
 
+let isAIMode = false;
+
+// Add event listener for AI mode button
+document.getElementById('playAI').addEventListener('click', () => {
+    isAIMode = true;
+    initializeGame();
+});
+
+// Modify the existing start game listener
+document.getElementById('startGame').addEventListener('click', () => {
+    isAIMode = false;
+    initializeGame();
+});
+
+// Modify the handleCellClick function to include AI move
 function handleCellClick(event) {
     if (!gameActive) return;
     
@@ -74,9 +89,15 @@ function handleCellClick(event) {
     
     if (board[row][col] !== null) return;
     
-    board[row][col] = currentPlayer;
+    makeMove(row, col);
     
-    // Use classes instead of text content
+    if (isAIMode && gameActive && currentPlayer === 'O') {
+        setTimeout(makeAIMove, 500); // Add slight delay for AI move
+    }
+}
+
+function makeMove(row, col) {
+    board[row][col] = currentPlayer;
     event.target.classList.add(currentPlayer.toLowerCase());
     
     const matches = checkWin(row, col);
@@ -93,6 +114,25 @@ function handleCellClick(event) {
     
     currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
     statusDisplay.textContent = `It's ${currentPlayer}'s turn`;
+}
+
+function makeAIMove() {
+    // Simple AI that makes random moves
+    let emptyCells = [];
+    for (let i = 0; i < gridSize; i++) {
+        for (let j = 0; j < gridSize; j++) {
+            if (board[i][j] === null) {
+                emptyCells.push([i, j]);
+            }
+        }
+    }
+    
+    if (emptyCells.length > 0) {
+        const [row, col] = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+        const cell = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+        makeMove(row, col);
+        cell.click();
+    }
 }
 
 function checkWin(row, col) {

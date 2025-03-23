@@ -168,6 +168,7 @@ input:focus {
 
 button {
     width: 100%;
+    margin-top: 10px;
     padding: 14px;
     background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
     color: white;
