@@ -591,9 +591,9 @@ function endGame() {
     playAgainButton.classList.add('play-again-btn');
     playAgainButton.addEventListener('click', resetGame);
     
-    // Position the button below the game board
+    // Position the button above the game stats
     playAgainButton.style.position = 'absolute';
-    playAgainButton.style.bottom = '5%';
+    playAgainButton.style.bottom = '160px'; // Positioned above the status display
     playAgainButton.style.left = '50%';
     playAgainButton.style.transform = 'translateX(-50%)';
     playAgainButton.style.width = '200px';
