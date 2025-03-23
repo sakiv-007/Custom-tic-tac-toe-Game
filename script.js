@@ -65,13 +65,13 @@ function renderBoard() {
     gameBoard.innerHTML = '';
     
     // Calculate cell size based on viewport dimensions
-    const viewportWidth = window.innerWidth * 0.85; // Increased to 85% of viewport width
-    const viewportHeight = window.innerHeight * 0.65; // Increased to 65% to make cells bigger
+    const viewportWidth = window.innerWidth * 0.85;
+    const viewportHeight = window.innerHeight * 0.65;
     
     // Determine the limiting dimension
     const maxCellWidth = viewportWidth / gridSize;
     const maxCellHeight = viewportHeight / gridSize;
-    const cellSize = Math.min(maxCellWidth, maxCellHeight, 100); // Increased max cell size to 100px
+    const cellSize = Math.min(maxCellWidth, maxCellHeight, 100);
     
     // Set the board dimensions
     gameBoard.style.gridTemplateColumns = `repeat(${gridSize}, ${cellSize}px)`;
@@ -80,18 +80,19 @@ function renderBoard() {
     // Center the board in the viewport with margin-top
     gameBoard.style.margin = '0 auto';
     gameBoard.style.position = 'absolute';
-    gameBoard.style.top = '40%'; // Adjusted to center vertically
+    gameBoard.style.top = '40%';
     gameBoard.style.left = '50%';
     gameBoard.style.transform = 'translate(-50%, -50%)';
     
-    // Position status and scores closer to the board
-    statusDisplay.style.position = 'absolute';
-    statusDisplay.style.bottom = '20%'; // Adjusted to be closer to the board
-    statusDisplay.style.left = '50%';
-    statusDisplay.style.transform = 'translateX(-50%)';
-    statusDisplay.style.width = '80%';
-    statusDisplay.style.maxWidth = '500px';
-    statusDisplay.style.maxWidth = '500px';
+    // Position scores 10px lower
+    const scoresElement = document.getElementById('scores');
+    if (scoresElement) {
+        scoresElement.style.position = 'absolute';
+        scoresElement.style.bottom = '10%'; // Adjusted position
+        scoresElement.style.left = '50%';
+        scoresElement.style.transform = 'translateX(-50%)';
+        scoresElement.style.marginTop = '10px'; // Added 10px margin top
+    }
     
     // Rest of the function remains the same
     for (let i = 0; i < gridSize; i++) {
