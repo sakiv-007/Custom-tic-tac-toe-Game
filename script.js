@@ -149,7 +149,7 @@ function handleCellClick(event) {
     makeMove(row, col);
     
     if (isAIMode && gameActive && currentPlayer === 'O') {
-        setTimeout(makeAIMove, 500); // Add slight delay for AI move
+        setTimeout(makeAIMove, 0); // Add slight delay for AI move
     }
 }
 
