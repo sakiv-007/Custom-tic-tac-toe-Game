@@ -768,3 +768,37 @@ button:hover::after {
     color: #ef4444;
     text-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
 }
+.hidden {
+    display: none;
+}
+
+.game-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    background: #0f172a;
+    z-index: 100;
+}
+
+.game-container #gameBoard {
+    max-width: 100%;
+    max-height: calc(100vh - 150px);
+    margin: 0 auto;
+}
+
+.game-container #scores {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.game-container #status {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+}

@@ -14,7 +14,8 @@ const matchLengthInput = document.getElementById('matchLength');
 const scoreX = document.getElementById('scoreX');
 const scoreO = document.getElementById('scoreO');
 
-document.getElementById('startGame').addEventListener('click', initializeGame);
+const gameContainer = document.querySelector('.game-container');
+const settingsContainer = document.querySelector('.container');
 
 function initializeGame() {
     gridSize = parseInt(gridSizeInput.value);
@@ -22,22 +23,36 @@ function initializeGame() {
     gameActive = true;
     currentPlayer = 'X';
     scores = { X: 0, O: 0 };
-    usedCells = new Set(); // Reset used cells
+    usedCells = new Set();
     board = Array.from({ length: gridSize }, () => Array(gridSize).fill(null));
+    
+    // Switch views
+    settingsContainer.classList.add('hidden');
+    gameContainer.classList.remove('hidden');
+    
     renderBoard();
     updateScores();
     statusDisplay.textContent = `It's ${currentPlayer}'s turn`;
     
-    // Add class for large grids
     if (gridSize > 8) {
-        document.querySelector('.container').classList.add('large-grid');
+        gameContainer.classList.add('large-grid');
     } else {
-        document.querySelector('.container').classList.remove('large-grid');
+        gameContainer.classList.remove('large-grid');
     }
     
-    // Remove any existing match lines
     document.querySelectorAll('.match-line').forEach(line => line.remove());
 }
+
+// Add event listeners for both buttons
+document.getElementById('playAI').addEventListener('click', () => {
+    isAIMode = true;
+    initializeGame();
+});
+
+document.getElementById('startGame').addEventListener('click', () => {
+    isAIMode = false;
+    initializeGame();
+});
 
 function updateScores() {
     scoreX.textContent = scores.X;
