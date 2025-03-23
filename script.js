@@ -61,7 +61,13 @@ function updateScores() {
 
 function renderBoard() {
     gameBoard.innerHTML = '';
-    gameBoard.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+    
+    // Calculate cell size based on viewport height
+    const maxHeight = window.innerHeight * 0.8; // 80% of viewport height
+    const cellSize = Math.min(maxHeight / gridSize, 100); // Max 100px per cell
+    
+    gameBoard.style.gridTemplateColumns = `repeat(${gridSize}, ${cellSize}px)`;
+    gameBoard.style.gridTemplateRows = `repeat(${gridSize}, ${cellSize}px)`;
     
     for (let i = 0; i < gridSize; i++) {
         for (let j = 0; j < gridSize; j++) {
@@ -70,7 +76,6 @@ function renderBoard() {
             cell.dataset.row = i;
             cell.dataset.col = j;
             
-            // Add class instead of text content if cell is not empty
             if (board[i][j]) {
                 cell.classList.add(board[i][j].toLowerCase());
             }
@@ -80,6 +85,13 @@ function renderBoard() {
         }
     }
 }
+
+// Add window resize handler
+window.addEventListener('resize', () => {
+    if (gameContainer.classList.contains('hidden') === false) {
+        renderBoard();
+    }
+});
 
 let isAIMode = false;
 
