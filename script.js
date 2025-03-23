@@ -63,28 +63,28 @@ function renderBoard() {
     gameBoard.innerHTML = '';
     
     // Calculate cell size based on viewport dimensions
-    const viewportWidth = window.innerWidth * 0.8; // 80% of viewport width
-    const viewportHeight = window.innerHeight * 0.55; // Further reduced to 55% to leave more room below
+    const viewportWidth = window.innerWidth * 0.85; // Increased to 85% of viewport width
+    const viewportHeight = window.innerHeight * 0.65; // Increased to 65% to make cells bigger
     
     // Determine the limiting dimension
     const maxCellWidth = viewportWidth / gridSize;
     const maxCellHeight = viewportHeight / gridSize;
-    const cellSize = Math.min(maxCellWidth, maxCellHeight, 80); // Max 80px per cell
+    const cellSize = Math.min(maxCellWidth, maxCellHeight, 100); // Increased max cell size to 100px
     
     // Set the board dimensions
     gameBoard.style.gridTemplateColumns = `repeat(${gridSize}, ${cellSize}px)`;
     gameBoard.style.gridTemplateRows = `repeat(${gridSize}, ${cellSize}px)`;
     
-    // Center the board in the viewport but position it higher
+    // Center the board in the viewport with margin-top
     gameBoard.style.margin = '0 auto';
     gameBoard.style.position = 'absolute';
-    gameBoard.style.top = '35%'; // Move up even more to make room for status below
+    gameBoard.style.top = '40%'; // Adjusted to center vertically
     gameBoard.style.left = '50%';
     gameBoard.style.transform = 'translate(-50%, -50%)';
     
-    // Position status and scores further below the board
+    // Position status and scores closer to the board
     statusDisplay.style.position = 'absolute';
-    statusDisplay.style.bottom = '15%'; // Moved up from bottom
+    statusDisplay.style.bottom = '20%'; // Adjusted to be closer to the board
     statusDisplay.style.left = '50%';
     statusDisplay.style.transform = 'translateX(-50%)';
     statusDisplay.style.width = '80%';
@@ -92,7 +92,7 @@ function renderBoard() {
     
     const scoresElement = document.getElementById('scores');
     scoresElement.style.position = 'absolute';
-    scoresElement.style.bottom = '5%'; // Moved up from bottom
+    scoresElement.style.bottom = '10%'; // Adjusted to be closer to the status
     scoresElement.style.left = '50%';
     scoresElement.style.transform = 'translateX(-50%)';
     scoresElement.style.width = '80%';

@@ -523,8 +523,9 @@ button:hover::after {
 
 .game-container #gameBoard {
     max-width: 100%;
-    max-height: calc(100vh - 150px);
+    max-height: calc(100vh - 200px); /* Reduced height to leave more space for stats */
     margin: 0 auto;
+    margin-bottom: 120px; /* Add bottom margin to create space for stats */
 }
 
 .game-container #scores {
@@ -532,13 +533,17 @@ button:hover::after {
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
+    width: 80%;
+    max-width: 500px;
 }
 
 .game-container #status {
     position: fixed;
-    bottom: 80px;
+    bottom: 90px; /* Increased from 80px to move further down */
     left: 50%;
     transform: translateX(-50%);
+    width: 80%;
+    max-width: 500px;
 }
 
 /* Match line styles */
