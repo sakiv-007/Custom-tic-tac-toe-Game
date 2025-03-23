@@ -62,13 +62,43 @@ function updateScores() {
 function renderBoard() {
     gameBoard.innerHTML = '';
     
-    // Calculate cell size based on viewport height
-    const maxHeight = window.innerHeight * 0.8; // 80% of viewport height
-    const cellSize = Math.min(maxHeight / gridSize, 100); // Max 100px per cell
+    // Calculate cell size based on viewport dimensions
+    const viewportWidth = window.innerWidth * 0.8; // 80% of viewport width
+    const viewportHeight = window.innerHeight * 0.55; // Further reduced to 55% to leave more room below
     
+    // Determine the limiting dimension
+    const maxCellWidth = viewportWidth / gridSize;
+    const maxCellHeight = viewportHeight / gridSize;
+    const cellSize = Math.min(maxCellWidth, maxCellHeight, 80); // Max 80px per cell
+    
+    // Set the board dimensions
     gameBoard.style.gridTemplateColumns = `repeat(${gridSize}, ${cellSize}px)`;
     gameBoard.style.gridTemplateRows = `repeat(${gridSize}, ${cellSize}px)`;
     
+    // Center the board in the viewport but position it higher
+    gameBoard.style.margin = '0 auto';
+    gameBoard.style.position = 'absolute';
+    gameBoard.style.top = '35%'; // Move up even more to make room for status below
+    gameBoard.style.left = '50%';
+    gameBoard.style.transform = 'translate(-50%, -50%)';
+    
+    // Position status and scores further below the board
+    statusDisplay.style.position = 'absolute';
+    statusDisplay.style.bottom = '15%'; // Moved up from bottom
+    statusDisplay.style.left = '50%';
+    statusDisplay.style.transform = 'translateX(-50%)';
+    statusDisplay.style.width = '80%';
+    statusDisplay.style.maxWidth = '500px';
+    
+    const scoresElement = document.getElementById('scores');
+    scoresElement.style.position = 'absolute';
+    scoresElement.style.bottom = '5%'; // Moved up from bottom
+    scoresElement.style.left = '50%';
+    scoresElement.style.transform = 'translateX(-50%)';
+    scoresElement.style.width = '80%';
+    scoresElement.style.maxWidth = '500px';
+    
+    // Rest of the function remains the same
     for (let i = 0; i < gridSize; i++) {
         for (let j = 0; j < gridSize; j++) {
             const cell = document.createElement('div');
@@ -330,17 +360,27 @@ function checkDirection(row, col, rowDir, colDir) {
         j -= colDir;
     }
     
+    // Only count matches if we have enough consecutive symbols
     if (count >= matchLength) {
         matches = Math.floor(count / matchLength);
-        
-        // Mark cells as used
-        cellsInMatch.forEach(([r, c]) => usedCells.add(`${r},${c}`));
         
         // Draw line for each complete match
         for (let i = 0; i < matches; i++) {
             const start = i * matchLength;
             const matchCells = cellsInMatch.slice(start, start + matchLength);
-            drawMatchLine(matchCells, currentPlayer);
+            
+            // Verify that all cells in this match segment have the current player's symbol
+            const allCellsMatch = matchCells.every(([r, c]) => 
+                board[r][c] === currentPlayer && !usedCells.has(`${r},${c}`)
+            );
+            
+            if (allCellsMatch) {
+                // Mark cells as used only if they form a valid match
+                matchCells.forEach(([r, c]) => usedCells.add(`${r},${c}`));
+                
+                // Draw the match line
+                drawMatchLine(matchCells, currentPlayer);
+            }
         }
     }
     
