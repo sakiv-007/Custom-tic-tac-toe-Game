@@ -88,7 +88,14 @@ function renderBoard() {
     // Center the board in the viewport properly
     gameBoard.style.margin = '0 auto';
     gameBoard.style.position = 'absolute';
-    gameBoard.style.top = '40%';
+    
+    // Move the board up based on grid size
+    if (gridSize >= 12) {
+        gameBoard.style.top = 'calc(40% - 35px)';
+    }else {
+        gameBoard.style.top = '40%';
+    }
+    
     gameBoard.style.left = '50%';
     gameBoard.style.transform = 'translate(-50%, -50%)';
     
