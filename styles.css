@@ -712,3 +712,35 @@ button:hover::after {
 .cell {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
+/* Replace the mobile-specific last move highlight with this new approach */
+@media (max-width: 768px) {
+    .last-move {
+        border-width: 3px;
+        animation: borderPulse 1.5s infinite;
+    }
+    
+    .last-move.x {
+        border-color: rgba(99, 102, 241, 0.8); /* Blue border for X */
+    }
+    
+    .last-move.o {
+        border-color: rgba(239, 68, 68, 0.8); /* Red border for O */
+    }
+    
+    @keyframes borderPulse {
+        0% { border-color: rgba(99, 102, 241, 0.8); }
+        50% { border-color: rgba(99, 102, 241, 0.4); }
+        100% { border-color: rgba(99, 102, 241, 0.8); }
+    }
+    
+    .last-move.o {
+        animation-name: borderPulseO;
+    }
+    
+    @keyframes borderPulseO {
+        0% { border-color: rgba(239, 68, 68, 0.8); }
+        50% { border-color: rgba(239, 68, 68, 0.4); }
+        100% { border-color: rgba(239, 68, 68, 0.8); }
+    }
+}
