@@ -629,10 +629,29 @@ function endGame() {
     // Create popup overlay
     const popup = document.createElement('div');
     popup.classList.add('game-popup');
+    popup.id = 'gameOverPopup';
     
     // Create popup content
     const popupContent = document.createElement('div');
     popupContent.classList.add('popup-content');
+    popupContent.style.position = 'relative'; // Ensure proper positioning for the close button
+    
+    // Add close button to the popup content
+    const closeButton = document.createElement('div');
+    closeButton.classList.add('popup-close');
+    closeButton.innerHTML = '&times;';
+    closeButton.style.position = 'absolute';
+    closeButton.style.top = '10px';
+    closeButton.style.right = '15px';
+    closeButton.style.fontSize = '24px';
+    closeButton.style.fontWeight = 'bold';
+    closeButton.style.cursor = 'pointer';
+    closeButton.style.color = '#cbd5e1';
+    closeButton.style.zIndex = '1001'; // Ensure it's above other popup content
+    closeButton.addEventListener('click', () => {
+        document.body.removeChild(popup);
+        showPlayAgainButton();
+    });
     
     // Add game results to popup
     const resultTitle = document.createElement('h2');
@@ -660,6 +679,7 @@ function endGame() {
     });
     
     // Assemble popup
+    popupContent.appendChild(closeButton);
     popupContent.appendChild(resultTitle);
     popupContent.appendChild(resultMessage);
     popupContent.appendChild(scoreInfo);
@@ -673,7 +693,33 @@ function endGame() {
     statusDisplay.textContent = `Game Over! ${winner} Final Scores - X: ${scores.X}, O: ${scores.O}`;
 }
 
-// Add a function to reset the game
+// Function to show the Play Again button above the turn indicator
+function showPlayAgainButton() {
+    let playAgainFloating = document.getElementById('playAgainFloating');
+    
+    if (!playAgainFloating) {
+        playAgainFloating = document.createElement('button');
+        playAgainFloating.id = 'playAgainFloating';
+        playAgainFloating.textContent = 'Play Again';
+        playAgainFloating.classList.add('play-again-btn');
+        
+        // Style the floating button
+        playAgainFloating.style.position = 'absolute';
+        playAgainFloating.style.bottom = 'calc(10% + 120px)';
+        playAgainFloating.style.left = '50%';
+        playAgainFloating.style.transform = 'translateX(-50%)';
+        playAgainFloating.style.zIndex = '200';
+        playAgainFloating.style.width = '150px'; // Reduced width
+        playAgainFloating.style.minWidth = 'auto'; // Override any minimum width
+        
+        playAgainFloating.addEventListener('click', resetGame);
+        gameContainer.appendChild(playAgainFloating);
+    } else {
+        playAgainFloating.style.display = 'block';
+    }
+}
+
+// Modify resetGame to hide the floating Play Again button
 function resetGame() {
     // Reset the game with the same settings
     gameActive = true;
@@ -689,6 +735,22 @@ function resetGame() {
     
     // Remove any match lines
     document.querySelectorAll('.match-line').forEach(line => line.remove());
+    
+    // Hide the floating Play Again button if it exists
+    const playAgainFloating = document.getElementById('playAgainFloating');
+    if (playAgainFloating) {
+        playAgainFloating.style.display = 'none';
+    }
+    
+    // Remove game-over class
+    gameContainer.classList.remove('game-over');
+    
+    // Update turn indicator
+    const turnIndicator = document.getElementById('turnIndicator');
+    if (turnIndicator) {
+        turnIndicator.style.color = currentPlayer === 'X' ? '#6366f1' : '#ef4444';
+        turnIndicator.textContent = `Current Turn: Player ${currentPlayer}`;
+    }
 }
 
 
