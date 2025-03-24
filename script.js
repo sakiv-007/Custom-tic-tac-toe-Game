@@ -77,21 +77,27 @@ function renderBoard() {
     gameBoard.style.gridTemplateColumns = `repeat(${gridSize}, ${cellSize}px)`;
     gameBoard.style.gridTemplateRows = `repeat(${gridSize}, ${cellSize}px)`;
     
-    // Center the board in the viewport with margin-top
+    // Center the board in the viewport properly
     gameBoard.style.margin = '0 auto';
     gameBoard.style.position = 'absolute';
     gameBoard.style.top = '40%';
     gameBoard.style.left = '50%';
     gameBoard.style.transform = 'translate(-50%, -50%)';
     
-    // Position scores 10px lower
+    // Ensure the game container is properly centered on mobile
+    gameContainer.style.padding = '20px 0'; // Remove horizontal padding
+    gameContainer.style.width = '100%';
+    gameContainer.style.left = '0'; // Reset any left positioning
+    
+    // Position scores
     const scoresElement = document.getElementById('scores');
     if (scoresElement) {
         scoresElement.style.position = 'absolute';
         scoresElement.style.bottom = '10%'; // Adjusted position
         scoresElement.style.left = '50%';
         scoresElement.style.transform = 'translateX(-50%)';
-        scoresElement.style.marginTop = '10px'; // Added 10px margin top
+        scoresElement.style.marginTop = '10px';
+        scoresElement.style.width = '80%'; // Control width for better mobile display
     }
     
     // Rest of the function remains the same
