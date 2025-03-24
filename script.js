@@ -89,6 +89,30 @@ function renderBoard() {
     gameContainer.style.width = '100%';
     gameContainer.style.left = '0'; // Reset any left positioning
     
+    // Create or update the turn indicator
+    let turnIndicator = document.getElementById('turnIndicator');
+    if (!turnIndicator) {
+        turnIndicator = document.createElement('div');
+        turnIndicator.id = 'turnIndicator';
+        turnIndicator.classList.add('turn-indicator');
+        gameContainer.appendChild(turnIndicator);
+    }
+    
+    // Position turn indicator above scores
+    turnIndicator.style.position = 'absolute';
+    turnIndicator.style.bottom = 'calc(10% + 60px)'; // Position above scores
+    turnIndicator.style.left = '50%';
+    turnIndicator.style.transform = 'translateX(-50%)';
+    turnIndicator.style.width = '80%'; // Match width with scores
+    turnIndicator.style.textAlign = 'center';
+    turnIndicator.style.padding = '10px';
+    turnIndicator.style.borderRadius = '8px';
+    turnIndicator.style.backgroundColor = 'rgba(15, 23, 42, 0.5)';
+    turnIndicator.style.border = '1px solid rgba(255, 255, 255, 0.05)';
+    turnIndicator.style.color = currentPlayer === 'X' ? '#6366f1' : '#ef4444';
+    turnIndicator.style.fontWeight = 'bold';
+    turnIndicator.textContent = `Current Turn: Player ${currentPlayer}`;
+    
     // Position scores
     const scoresElement = document.getElementById('scores');
     if (scoresElement) {
@@ -177,7 +201,13 @@ function makeMove(row, col, clickEvent = null) {
     }
     
     currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-    // Remove status display update
+    
+    // Update turn indicator
+    const turnIndicator = document.getElementById('turnIndicator');
+    if (turnIndicator) {
+        turnIndicator.style.color = currentPlayer === 'X' ? '#6366f1' : '#ef4444';
+        turnIndicator.textContent = `Current Turn: Player ${currentPlayer}`;
+    }
 }
 
 function makeAIMove() {
