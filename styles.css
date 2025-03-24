@@ -295,6 +295,8 @@ button:hover::after {
     .cell {
         font-size: 1rem;
         border-radius: 4px;
+        background: rgba(40, 53, 75, 0.8); /* Lighter background for better visibility */
+        border: 1px solid rgba(255, 255, 255, 0.15); /* Slightly more visible border */
     }
     
     #scores {
@@ -383,6 +385,8 @@ button:hover::after {
     
     .cell {
         border-radius: 3px;
+        background: rgba(60, 75, 100, 0.9); /* Brightest background for very small screens */
+        border: 1px solid rgba(255, 255, 255, 0.25); /* Most visible border */
     }
     
     .cell.x::before, 
