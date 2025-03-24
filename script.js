@@ -55,7 +55,7 @@ document.getElementById('playAI').addEventListener('click', () => {
         setTimeout(() => {
             // Start the automatic AI gameplay
             autoPlayAI();
-        }, 50);
+        }, 5);
     }
 });
 
@@ -302,10 +302,17 @@ function findRandomMove() {
 function makeMove(row, col, clickEvent = null) {
     board[row][col] = currentPlayer;
     
+    // Remove previous last-move highlight if exists
+    const previousLastMove = document.querySelector('.last-move');
+    if (previousLastMove) {
+        previousLastMove.classList.remove('last-move');
+    }
+    
     // Update the cell's visual appearance
     const cell = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
     if (cell) {
         cell.classList.add(currentPlayer.toLowerCase());
+        cell.classList.add('last-move'); // Add last-move class
     }
     
     const matches = checkWin(row, col);
