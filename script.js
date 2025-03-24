@@ -49,6 +49,14 @@ function initializeGame() {
 document.getElementById('playAI').addEventListener('click', () => {
     isAIMode = true;
     initializeGame();
+    
+    // TESTING MODE: Start AI moves automatically after a short delay
+    if (isAIMode && gameActive) {
+        setTimeout(() => {
+            // Start the automatic AI gameplay
+            autoPlayAI();
+        }, 50);
+    }
 });
 
 document.getElementById('startGame').addEventListener('click', () => {
@@ -167,6 +175,13 @@ document.getElementById('startGame').addEventListener('click', () => {
 function handleCellClick(event) {
     if (!gameActive) return;
     
+    // TESTING MODE: Automated moves for both players in AI mode
+    if (isAIMode) {
+        makeAIMove(); // This will trigger the chain of AI moves
+        return;
+    }
+    
+    // Normal gameplay for non-AI mode
     const row = parseInt(event.target.dataset.row);
     const col = parseInt(event.target.dataset.col);
     
@@ -175,8 +190,106 @@ function handleCellClick(event) {
     makeMove(row, col);
     
     if (isAIMode && gameActive && currentPlayer === 'O') {
-        setTimeout(makeAIMove, 200); // Add slight delay for AI move
+        setTimeout(makeAIMove, 200);
     }
+}
+
+// New function to handle automatic AI gameplay
+function autoPlayAI() {
+    if (!gameActive) return;
+    
+    // Get the move based on current player
+    const player = currentPlayer;
+    let move;
+    
+    if (player === 'X') {
+        // Strategy for X (first player)
+        move = findBestMove('X') || findStrategicMove() || findRandomMove();
+    } else {
+        // Strategy for O (second player)
+        move = findBestMove('O') || findBestMove('X') || findStrategicMove() || findRandomMove();
+    }
+    
+    if (move) {
+        const [row, col] = move;
+        makeMove(row, col);
+        
+        // Continue making moves if game is still active
+        if (gameActive) {
+            setTimeout(autoPlayAI, 50); // Increased delay for better visualization
+        }
+    }
+}
+
+// Modify the handleCellClick function
+function handleCellClick(event) {
+    if (!gameActive) return;
+    
+    // For AI mode, don't respond to clicks during testing
+    if (isAIMode) {
+        return; // Ignore clicks in AI mode during testing
+    }
+    
+    // Normal gameplay for non-AI mode
+    const row = parseInt(event.target.dataset.row);
+    const col = parseInt(event.target.dataset.col);
+    
+    if (board[row][col] !== null) return;
+    
+    makeMove(row, col);
+    
+    // Regular AI mode (not testing) - AI responds to player moves
+    if (isAIMode && gameActive && currentPlayer === 'O') {
+        setTimeout(() => {
+            // Find and make the AI move
+            const move = findBestMove('O') || findBestMove('X') || findStrategicMove() || findRandomMove();
+            if (move) {
+                const [aiRow, aiCol] = move;
+                makeMove(aiRow, aiCol);
+            }
+        }, 500); // Adjust delay as needed
+    }
+}
+
+// IMPORTANT: Remove or comment out the duplicate makeAIMove function (around line 400-420)
+// function makeAIMove() { ... } - This should be removed
+function makeAIMove() {
+    if (!gameActive) return; // Stop if game is over
+    
+    // TESTING MODE: Different strategies for X and O
+    const player = currentPlayer;
+    let move;
+    
+    if (player === 'X') {
+        // Strategy for X (first player)
+        move = findBestMove('X') || findStrategicMove() || findRandomMove();
+    } else {
+        // Original AI strategy for O
+        move = findBestMove('O') || findBestMove('X') || findStrategicMove() || findRandomMove();
+    }
+    
+    if (move) {
+        const [row, col] = move;
+        makeMove(row, col);
+        
+        // TESTING MODE: Continue making moves until game is over
+        if (isAIMode && gameActive) {
+            setTimeout(makeAIMove, 50); // Increased delay for better visualization
+        }
+    }
+}
+
+// Helper function for random moves
+function findRandomMove() {
+    let emptyCells = [];
+    for (let i = 0; i < gridSize; i++) {
+        for (let j = 0; j < gridSize; j++) {
+            if (board[i][j] === null) {
+                emptyCells.push([i, j]);
+            }
+        }
+    }
+    return emptyCells.length > 0 ? emptyCells[Math.floor(Math.random() * emptyCells.length)] : null;
 }
 
 function makeMove(row, col, clickEvent = null) {
@@ -192,10 +305,17 @@ function makeMove(row, col, clickEvent = null) {
     if (matches > 0) {
         scores[currentPlayer] += matches;
         updateScores();
-        // Remove status display update
     }
     
+    // Check for game end conditions
     if (checkDraw()) {
+        endGame();
+        return;
+    }
+    
+    // Check if all cells are used in matches
+    const allCellsUsed = board.flat().every(cell => cell !== null || usedCells.has(`${cell}`));
+    if (allCellsUsed) {
         endGame();
         return;
     }
