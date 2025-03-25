@@ -5,7 +5,6 @@ let matchLength = 3;
 let gameActive = true;
 let scores = { X: 0, O: 0 };
 let usedCells = new Set(); // Track used cells
-let playerNames = { X: 'Player X', O: 'Player O' }; // Add player names object
 
 
 const gameBoard = document.getElementById('gameBoard');
@@ -62,172 +61,12 @@ document.getElementById('playAI').addEventListener('click', () => {
 
 document.getElementById('startGame').addEventListener('click', () => {
     isAIMode = false;
-    
-    // Show player name modal instead of immediately starting the game
-    showPlayerNameModal();
+    initializeGame();
 });
 
-// Add function to show player name modal
-// Add function to show player name modal
-function showPlayerNameModal() {
-    // Create modal overlay
-    const modal = document.createElement('div');
-    modal.classList.add('player-name-modal');
-    modal.style.position = 'fixed';
-    modal.style.top = '0';
-    modal.style.left = '0';
-    modal.style.width = '100%';
-    modal.style.height = '100%';
-    modal.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-    modal.style.display = 'flex';
-    modal.style.justifyContent = 'center';
-    modal.style.alignItems = 'center';
-    modal.style.zIndex = '1000';
-    // Add opacity animation for fade-in effect
-    modal.style.opacity = '0';
-    modal.style.transition = 'opacity 0.4s ease-in-out';
-    
-    // Create modal content
-    const modalContent = document.createElement('div');
-    modalContent.classList.add('modal-content');
-    modalContent.style.backgroundColor = '#1e293b';
-    modalContent.style.padding = '30px';
-    modalContent.style.borderRadius = '10px';
-    modalContent.style.width = '90%';
-    modalContent.style.maxWidth = '400px';
-    modalContent.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.3)';
-    modalContent.style.border = '1px solid rgba(255, 255, 255, 0.1)';
-    // Add transform animation for scale effect
-    modalContent.style.transform = 'scale(0.8)';
-    modalContent.style.transition = 'transform 0.4s ease-out';
-    
-    
-    // Create title
-    const title = document.createElement('h2');
-    title.textContent = 'Enter Player Names';
-    title.style.color = '#e2e8f0';
-    title.style.marginBottom = '20px';
-    title.style.textAlign = 'center';
-    
-    // Create form
-    const form = document.createElement('form');
-    form.id = 'playerNameForm';
-    form.style.display = 'flex';
-    form.style.flexDirection = 'column';
-    form.style.gap = '15px';
-    
-        // Player X input
-    const playerXLabel = document.createElement('label');
-    playerXLabel.textContent = 'Player X:';
-    playerXLabel.style.color = '#6366f1';
-    playerXLabel.style.fontWeight = 'bold';
-    playerXLabel.style.marginBottom = '0px';
-    playerXLabel.style.display = 'inline-block';
-    
-    const playerXInput = document.createElement('input');
-    playerXInput.type = 'text';
-    playerXInput.id = 'playerXName';
-    playerXInput.placeholder = 'Player X';
-    playerXInput.style.padding = '10px';
-    playerXInput.style.borderRadius = '5px';
-    playerXInput.style.backgroundColor = '#334155';
-    playerXInput.style.border = '1px solid #475569';
-    playerXInput.style.color = '#e2e8f0';
-    playerXInput.style.marginTop = '2px';
-        
-        // Player O input
-    const playerOLabel = document.createElement('label');
-    playerOLabel.textContent = 'Player O:';
-    playerOLabel.style.color = '#ef4444';
-    playerOLabel.style.fontWeight = 'bold';
-    playerOLabel.style.marginBottom = '0px';
-    playerOLabel.style.display = 'inline-block';
-    
-    const playerOInput = document.createElement('input');
-    playerOInput.type = 'text';
-    playerOInput.id = 'playerOName';
-    playerOInput.placeholder = 'Player O';
-    playerOInput.style.padding = '10px';
-    playerOInput.style.borderRadius = '5px';
-    playerOInput.style.backgroundColor = '#334155';
-    playerOInput.style.border = '1px solid #475569';
-    playerOInput.style.color = '#e2e8f0';
-    playerOInput.style.marginTop = '0px';
-    
-    // Submit button
-    const submitButton = document.createElement('button');
-    submitButton.type = 'submit';
-    submitButton.textContent = 'Start Game';
-    submitButton.style.padding = '12px';
-    submitButton.style.marginTop = '10px';
-    submitButton.style.backgroundColor = '#10b981';
-    submitButton.style.color = 'white';
-    submitButton.style.border = 'none';
-    submitButton.style.borderRadius = '5px';
-    submitButton.style.cursor = 'pointer';
-    submitButton.style.fontWeight = 'bold';
-    submitButton.style.transition = 'background-color 0.3s, transform 0.2s';
-
-    // Add hover effect to button
-    submitButton.addEventListener('mouseover', () => {
-        submitButton.style.backgroundColor = '#059669';
-        submitButton.style.transform = 'scale(1.05)';
-    });
-    
-    submitButton.addEventListener('mouseout', () => {
-        submitButton.style.backgroundColor = '#10b981';
-        submitButton.style.transform = 'scale(1)';
-    });
-    
-    // Assemble form
-    form.appendChild(playerXLabel);
-    form.appendChild(playerXInput);
-    form.appendChild(playerOLabel);
-    form.appendChild(playerOInput);
-    form.appendChild(submitButton);
-    
-    // Assemble modal
-    modalContent.appendChild(title);
-    modalContent.appendChild(form);
-    modal.appendChild(modalContent);
-    
-    // Add form submission handler
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Get player names, use defaults if empty
-        const xName = playerXInput.value.trim() || 'Player X';
-        const oName = playerOInput.value.trim() || 'Player O';
-        
-        // Store player names
-        playerNames = {
-            X: xName,
-            O: oName
-        };
-        
-        // Add exit animation
-        modal.style.opacity = '0';
-        modalContent.style.transform = 'scale(0.8)';
-        
-        // Remove modal after animation completes
-        setTimeout(() => {
-            document.body.removeChild(modal);
-            // Start the game
-            initializeGame();
-        }, 300);
-    });
-    
-    // Add modal to body
-    document.body.appendChild(modal);
-    
-    // Trigger entrance animation after a small delay
-    setTimeout(() => {
-        modal.style.opacity = '1';
-        modalContent.style.transform = 'scale(1)';
-    }, 10);
-    
-    // Focus on first input
-    playerXInput.focus();
+function updateScores() {
+    scoreX.textContent = scores.X;
+    scoreO.textContent = scores.O;
 }
 
 function renderBoard() {
@@ -287,7 +126,7 @@ function renderBoard() {
     turnIndicator.style.border = '1px solid rgba(255, 255, 255, 0.05)';
     turnIndicator.style.color = currentPlayer === 'X' ? '#6366f1' : '#ef4444';
     turnIndicator.style.fontWeight = 'bold';
-    turnIndicator.textContent = `Current Turn: ${playerNames[currentPlayer]}`;
+    turnIndicator.textContent = `Current Turn: Player ${currentPlayer}`;
     
     // Position scores
     const scoresElement = document.getElementById('scores');
@@ -497,11 +336,11 @@ function makeMove(row, col, clickEvent = null) {
     
     currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
     
-    // Update turn indicator with player name
+    // Update turn indicator
     const turnIndicator = document.getElementById('turnIndicator');
     if (turnIndicator) {
         turnIndicator.style.color = currentPlayer === 'X' ? '#6366f1' : '#ef4444';
-        turnIndicator.textContent = `Current Turn: ${playerNames[currentPlayer]}`;
+        turnIndicator.textContent = `Current Turn: Player ${currentPlayer}`;
     }
 }
 
@@ -911,27 +750,15 @@ function checkDraw() {
 function endGame() {
     gameActive = false;
     
-   // Add game-over class to hide the status display
-   gameContainer.classList.add('game-over');
+    // Add game-over class to hide the status display
+    gameContainer.classList.add('game-over');
     
-   let winner = 'It\'s a tie!';
-   if (scores.X > scores.O) {
-       winner = `${playerNames.X} wins!`;
-   } else if (scores.O > scores.X) {
-       winner = `${playerNames.O} wins!`;
-   }
-
-
-   // Update score info with player names
-   const scoreInfo = document.createElement('div');
-   scoreInfo.classList.add('popup-scores');
-   scoreInfo.innerHTML = `
-       <div class="popup-score x-score">${playerNames.X}: ${scores.X}</div>
-       <div class="popup-score o-score">${playerNames.O}: ${scores.O}</div>
-   `;
-
-
-
+    let winner = 'It\'s a tie!';
+    if (scores.X > scores.O) {
+        winner = 'Player X wins!';
+    } else if (scores.O > scores.X) {
+        winner = 'Player O wins!';
+    }
     
     // Create popup overlay
     const popup = document.createElement('div');
@@ -967,7 +794,12 @@ function endGame() {
     const resultMessage = document.createElement('p');
     resultMessage.textContent = winner;
     
-    
+    const scoreInfo = document.createElement('div');
+    scoreInfo.classList.add('popup-scores');
+    scoreInfo.innerHTML = `
+        <div class="popup-score x-score">Player X: ${scores.X}</div>
+        <div class="popup-score o-score">Player O: ${scores.O}</div>
+    `;
     
     // Create Play Again button
     const playAgainButton = document.createElement('button');
@@ -1047,11 +879,11 @@ function resetGame() {
     // Remove game-over class
     gameContainer.classList.remove('game-over');
     
-    // Update turn indicator with player name
+    // Update turn indicator
     const turnIndicator = document.getElementById('turnIndicator');
     if (turnIndicator) {
         turnIndicator.style.color = currentPlayer === 'X' ? '#6366f1' : '#ef4444';
-        turnIndicator.textContent = `Current Turn: ${playerNames[currentPlayer]}`;
+        turnIndicator.textContent = `Current Turn: Player ${currentPlayer}`;
     }
 }
 
